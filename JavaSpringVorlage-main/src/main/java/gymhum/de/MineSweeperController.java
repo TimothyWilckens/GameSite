@@ -53,13 +53,15 @@ public class MineSweeperController {
         System.out.println("Feld " + hoehe + " " + breite +" wurde freigelegt");
 
         if(firstReveal == true){
-            if((getMinefelder()[hoehe][breite].getHoehe() != 0) && (getMinefelder()[hoehe][breite].getHoehe() != 9) && (getMinefelder()[hoehe][breite].getBreite() != 0) && (getMinefelder()[hoehe][breite].getBreite() != 0)){
-                getMinefelder()[hoehe][breite].setIstFreigelegt(true);
-                for(int c = -1; c <= 1; c++){
-                    for(int d = -1; d <= 1; d++){
-                        if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == false){
-                            getMinefelder()[hoehe+c][breite+d].setIstFreigelegt(true);
-                        }
+            getMinefelder()[hoehe][breite].setIstFreigelegt(true);
+            for(int c = -1; c <= 1; c++){
+                for(int d = -1; d <= 1; d++){
+                    try {
+                    if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == false){
+                        getMinefelder()[hoehe+c][breite+d].setIstFreigelegt(true);
+                    }
+                    } catch (Exception e) {
+                        System.out.println("Feld ist außerhalb der Grenze");
                     }
                 }
             }
@@ -115,131 +117,17 @@ public class MineSweeperController {
     }
 
     private void Anzeige(){
-
-        
-        // Anzeige Randstücke
         for(int hoehe = 0; hoehe < 10; hoehe++){
             for(int breite = 0; breite < 10; breite ++){
-                if((getMinefelder()[hoehe][breite].getHoehe() == 0) && (getMinefelder()[hoehe][breite].getBreite() == 0)){
-                    int bombsnearby = 0;
-                    for(int c = 0; c <= 1; c++){
-                        for(int d = 0; d <= 1; d++){
-                            if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == true){
-                                bombsnearby += 1;
-                            }
-                        }
-                    }
-                    getMinefelder()[hoehe][breite].setNearBombs(bombsnearby);
-                    System.out.println("Minefeld " + hoehe + breite + " ist von " + bombsnearby + " umgeben");
-                }
-
-                if((getMinefelder()[hoehe][breite].getHoehe() == 0) && (getMinefelder()[hoehe][breite].getBreite() == 9)){
-                    int bombsnearby = 0;
-                    for(int c = 0; c <= 1; c++){
-                        for(int d = -1; d <= 0; d++){
-                            if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == true){
-                                bombsnearby += 1;
-                            }
-                        }
-                    }
-                    getMinefelder()[hoehe][breite].setNearBombs(bombsnearby);
-                    System.out.println("Minefeld " + hoehe + breite + " ist von " + bombsnearby + " umgeben");
-                }
-
-                if((getMinefelder()[hoehe][breite].getHoehe() == 9) && (getMinefelder()[hoehe][breite].getBreite() == 0)){
-                    int bombsnearby = 0;
-                    for(int c = -1; c <= 0; c++){
-                        for(int d = 0; d <= 1; d++){
-                            if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == true){
-                                bombsnearby += 1;
-                            }
-                        }
-                    }
-                    getMinefelder()[hoehe][breite].setNearBombs(bombsnearby);
-                    System.out.println("Minefeld " + hoehe + breite + " ist von " + bombsnearby + " umgeben");
-                }
-
-                if((getMinefelder()[hoehe][breite].getHoehe() == 9) && (getMinefelder()[hoehe][breite].getBreite() == 9)){
-                    int bombsnearby = 0;
-                    for(int c = -1; c <= 0; c++){
-                        for(int d = -1; d <= 0; d++){
-                            if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == true){
-                                bombsnearby += 1;
-                            }
-                        }
-                    }
-                    getMinefelder()[hoehe][breite].setNearBombs(bombsnearby);
-                    System.out.println("Minefeld " + hoehe + breite + " ist von " + bombsnearby + " umgeben");
-                }
-            }
-        }
-
-        
-        // Anzeige oberer Rand ohne Endstücke
-        for(int breite = 1; breite < 9; breite ++){
-            int bombsnearby = 0;
-            for(int c = 0; c <= 1; c++){
-                for(int d = -1; d <= 1; d++){
-                    if(getMinefelder()[0+c][breite+d].getIstBombe() == true){
-                        bombsnearby += 1;
-                    }
-                }
-            }
-            getMinefelder()[0][breite].setNearBombs(bombsnearby);
-            System.out.println("Minefeld 0 " + breite + " ist von " + bombsnearby + " umgeben");
-        }
-        
-        
-        // Anzeige unterer Rand ohne Endstücke
-        for(int breite = 1; breite < 9; breite ++){
-            int bombsnearby = 0;
-            for(int c = -1; c <= 0; c++){
-                for(int d = -1; d <= 1; d++){
-                    if(getMinefelder()[9+c][breite+d].getIstBombe() == true){
-                        bombsnearby += 1;
-                    }
-                }
-            }
-            getMinefelder()[9][breite].setNearBombs(bombsnearby);
-            System.out.println("Minefeld 9 " + breite + " ist von " + bombsnearby + " umgeben");
-        }
-
-        // Anzeige Rand links ohne Endstücke
-        for(int hoehe = 1; hoehe < 9; hoehe ++){
-            int bombsnearby = 0;
-            for(int c = -1; c <= 1; c++){
-                for(int d = 0; d <= 1; d++){
-                    if(getMinefelder()[hoehe+c][0+d].getIstBombe() == true){
-                        bombsnearby += 1;
-                    }
-                }
-            }
-            getMinefelder()[hoehe][0].setNearBombs(bombsnearby);
-            System.out.println("Minefeld " + hoehe + " 0 ist von " + bombsnearby + " umgeben");
-        }
-
-        // Anzeige Rand rechts ohne Endstücke
-        for(int hoehe = 1; hoehe < 9; hoehe ++){
-            int bombsnearby = 0;
-            for(int c = -1; c <= 1; c++){
-                for(int d = -1; d <= 0; d++){
-                    if(getMinefelder()[hoehe+c][9+d].getIstBombe() == true){
-                        bombsnearby += 1;
-                    }
-                }
-            }
-            getMinefelder()[hoehe][9].setNearBombs(bombsnearby);
-            System.out.println("Minefeld " + hoehe + " 9 ist von " + bombsnearby + " umgeben");
-        }
-        
-        // Anzeige restliche Felder
-        for(int hoehe = 1; hoehe < 9; hoehe++){
-            for(int breite = 1; breite < 9; breite ++){
                 int bombsnearby = 0;
                 for(int c = -1; c <= 1; c++){
                     for(int d = -1; d <= 1; d++){
+                        try {
                         if(getMinefelder()[hoehe+c][breite+d].getIstBombe() == true){
                             bombsnearby += 1;
+                        }
+                        } catch (Exception e) {
+                            System.out.println("ZU prüfendes Feld ist außerhalb der Grenze");
                         }
                     }
                 }
